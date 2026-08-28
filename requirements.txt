@@ -1,0 +1,10 @@
+pandas
+transformers
+torch
+scikit-learn
+shap
+datasets
+imbalanced-learn
+beautifulsoup4
+fastapi
+uvicorn

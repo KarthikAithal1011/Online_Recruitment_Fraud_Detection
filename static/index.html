@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Online Recruitment Fraud (ORF) Detection System using RoBERTa, SMOTE, and SHAP explainable AI.">
+    <title>ORF Detection Center - Recruitment Security</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons for visual flair -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>ORF <span>Detector</span></h1>
+                    <p>AI-Powered Security</p>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-item active" id="tab-dashboard" onclick="switchTab('dashboard')">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" id="tab-custom-input" onclick="switchTab('custom-input')">
+                    <i class="fa-solid fa-keyboard"></i>
+                    <span>Analyze Custom Text</span>
+                </button>
+                <button class="nav-item" id="tab-about" onclick="switchTab('about')">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Technical Info</span>
+                </button>
+            </nav>
+            
+            <!-- System Status removed -->
+        </aside>
+
+        <!-- Main Body -->
+        <main class="main-content">
+            <!-- Top Dashboard Bar -->
+            <header class="top-bar">
+                <div class="greeting">
+                    <h2>Recruitment Security Dashboard</h2>
+                    <p>Real-time online recruitment fraud prevention and explanation.</p>
+                </div>
+                <div class="stats-badges">
+                    <div class="badge">
+                        <span>Model: RoBERTa + MLP</span>
+                    </div>
+                    <div class="badge">
+                        <span>Class Balance: SMOTE</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-viewport">
+                <!-- Dashboard Section -->
+                <section class="tab-content active" id="view-dashboard">
+                    <div class="grid-layout">
+                        <!-- Left Panel: Job Feed -->
+                        <div class="panel glass feed-panel">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-list-check"></i> Scraped Job Postings</h3>
+                                <button class="btn btn-primary" id="btn-fetch" onclick="fetchJobs()">
+                                    <i class="fa-solid fa-rotate"></i> Fetch Jobs
+                                </button>
+                            </div>
+                            <div class="job-list" id="job-list-container">
+                                <!-- Listings populated by JS -->
+                                <div class="loading-state">
+                                    <div class="spinner"></div>
+                                    <p>Click "Fetch Jobs" to scrape live remote writing jobs or load mock jobs.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Results & Explanation -->
+                        <div class="panel glass result-panel">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-magnifying-glass-chart"></i> Analysis Report</h3>
+                            </div>
+                            <div class="analysis-viewport" id="analysis-viewport-container">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    <h4>No Active Analysis</h4>
+                                    <p>Select a job listing from the left panel and click "Analyze" to see classification and SHAP word-level details.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Custom Input Section -->
+                <section class="tab-content" id="view-custom-input">
+                    <div class="grid-layout full-width">
+                        <div class="panel glass input-panel">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-paste"></i> Custom Job Posting Analysis</h3>
+                            </div>
+                            <p class="section-desc">Paste the text of a job listing (combining title, requirements, and description if possible) below to verify its legitimacy.</p>
+                            
+                            <form id="custom-analysis-form" onsubmit="analyzeCustom(event)">
+                                <div class="form-group">
+                                    <label for="custom-text-input">Job Description Text</label>
+                                    <textarea id="custom-text-input" placeholder="Paste full job details here (e.g. Title, Company, Duties, Interview Details...)" required></textarea>
+                                    <div id="custom-validation-error" style="display: none; color: var(--accent-red); margin-top: 8px; font-size: 13px; font-weight: 500; align-items: center; gap: 8px;">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                        <span id="custom-validation-error-text"></span>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success" id="btn-analyze-custom">
+                                    <i class="fa-solid fa-brain"></i> Run Safety Analysis
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <!-- Analysis output underneath or side by side for custom text -->
+                        <div class="panel glass result-panel" id="custom-result-panel" style="display: none;">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-magnifying-glass-chart"></i> Custom Text Analysis Report</h3>
+                            </div>
+                            <div class="analysis-viewport" id="custom-analysis-viewport">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Technical/About Section -->
+                <section class="tab-content" id="view-about">
+                    <div class="panel glass about-panel">
+                        <h2>Technical Framework Methodology</h2>
+                        <hr class="separator">
+                        
+                        <div class="tech-grid">
+                            <div class="tech-card">
+                                <div class="tech-icon"><i class="fa-solid fa-network-wired"></i></div>
+                                <h4>Semantic Vector Embeddings</h4>
+                                <p>We pass concatenated job listing text through <code>distilroberta-base</code> to extract dense 768-dimensional embeddings of the special <code>[CLS]</code> classification token, representing global context.</p>
+                            </div>
+                            
+                            <div class="tech-card">
+                                <div class="tech-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                                <h4>Synthetic Minority Over-sampling</h4>
+                                <p>To resolve the severe class imbalance in recruitment fraud datasets, we apply <strong>SMOTE</strong> directly in the high-dimensional embedding space, creating synthetic minority instances for training.</p>
+                            </div>
+                            
+                            <div class="tech-card">
+                                <div class="tech-icon"><i class="fa-solid fa-brain"></i></div>
+                                <h4>Multi-Layer Perceptron Head</h4>
+                                <p>An MLP Classifier with hidden layers of sizes <code>(128, 64)</code> is trained on the balanced SMOTE embeddings to model non-linear fraud indicators with high generalizability.</p>
+                            </div>
+                            
+                            <div class="tech-card">
+                                <div class="tech-icon"><i class="fa-solid fa-eye"></i></div>
+                                <h4>Explainable AI (XAI) via SHAP</h4>
+                                <p>Using a partition-based <strong>SHAP Text Explainer</strong>, the system calculates Shapley values for individual tokens, highlighting words that contribute directly to the fraud score.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <!-- App JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

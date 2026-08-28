@@ -1,0 +1,28 @@
+# Environments and virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache and temporary files
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Large dataset and model weights (to prevent blocking git push)
+fake_job_postings.csv
+orf_model/model.safetensors
+
+# Local configurations and environment variables
+.env
+.vscode/
+.idea/
+
+# Execution logs
+pip_install.log
+pip_log.txt
+*.log
+
+# Training checkpoint folders
+results/
+checkpoint-*/

@@ -1,0 +1,5 @@
+- [x] Add `.level-warning` styling in `static/style.css`
+- [x] Update risk classification and return logic in `app.py`
+- [x] Update frontend report rendering in `static/app.js`
+- [x] Test the backend server and verify three risk levels render correctly (Low/Green, Medium/Orange, High/Red)
+- [x] Update walkthrough.md to document the multi-tiered risk level implementation

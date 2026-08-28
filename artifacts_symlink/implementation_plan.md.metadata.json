@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan to resolve broken recruitment links for mock jobs. It adds a new route /mock-job/{job_id} in app.py to serve a beautifully styled details page for mock jobs, and updates live_scraper.py to use relative /mock-job/{job_id} paths instead of non-existent domain URLs.",
+  "updatedAt": "2026-06-17T04:18:33.847489800Z",
+  "requestFeedback": true
+}

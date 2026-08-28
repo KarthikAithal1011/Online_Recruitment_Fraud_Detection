@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of fixing the broken recruitment links by rendering local mock job details pages. Details changes to live_scraper.py and app.py, and shows verification results with screenshots.",
+  "updatedAt": "2026-06-17T04:21:49.035096100Z"
+}
